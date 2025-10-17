@@ -16,7 +16,10 @@ require("lazy").setup({
 	require("plugins.markview"),
 	require("plugins.mini"),
 	require("plugins.neogen"),
+	require("plugins.neogit"),
 	require("plugins.nvim-treesitter"),
+	require("plugins.toggleterm"),
+	require("plugins.undotree"),
 }, {
 	ui = {
 		-- If you are using a Nerd Font: set icons to an empty table which will use the

@@ -12,10 +12,18 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagn
 -- or just use <C-\><C-n> to exit terminal mode
 
 -- Keybinds to make split navigation easier.
-vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
-vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
-vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
-vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+vim.keymap.set("n", ",h", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", ",l", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", ",j", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", ",k", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+-- Same thing for terminal mode
+vim.keymap.set("t", "<esc>", [[<C-\><C-n>]], opts)
+vim.keymap.set("t", ",h", [[<Cmd>wincmd h<CR>]], opts)
+vim.keymap.set("t", ",j", [[<Cmd>wincmd j<CR>]], opts)
+vim.keymap.set("t", ",k", [[<Cmd>wincmd k<CR>]], opts)
+vim.keymap.set("t", ",l", [[<Cmd>wincmd l<CR>]], opts)
+vim.keymap.set("t", ",w", [[<C-\><C-n><C-w>]], opts)
 
 -- [[ Basic Autocommands ]]
 
@@ -25,6 +33,14 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
 	callback = function()
 		vim.hl.on_yank()
+	end,
+})
+
+-- Expand the conentional commits snippit automatically
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "gitcommit",
+	callback = function()
+		vim.notify("Tip: type `cc<Tab>` to insert a Conventional Commit snippet")
 	end,
 })
 

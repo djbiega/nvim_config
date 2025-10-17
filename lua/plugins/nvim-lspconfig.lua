@@ -8,14 +8,6 @@ return {
 		{ "mason-org/mason.nvim", opts = {} },
 		"mason-org/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-		"hrsh7th/nvim-cmp",
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
-		-- Allows extra capabilities provided by blink.cmp
 		"saghen/blink.cmp",
 	},
 	config = function()
@@ -171,7 +163,6 @@ return {
 		--  When you add blink.cmp, luasnip, etc. Neovim now has *more* capabilities.
 		--  So, we create new capabilities with blink.cmp, and then broadcast that to the servers.
 		local blink_capabilities = require("blink.cmp").get_lsp_capabilities()
-		local cmp_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 		-- Enable the following language servers
 		--  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -223,47 +214,6 @@ return {
 			"stylua", -- Used to format Lua code
 		})
 
-		local cmp = require("cmp")
-		local luasnip = require("luasnip")
-		local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-		cmp.setup({
-			snippet = {
-				expand = function(args)
-					require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-				end,
-			},
-
-			mapping = cmp.mapping.preset.insert({
-
-				["<Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_next_item()
-					elseif luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<S-Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_prev_item()
-					elseif luasnip.locally_jumpable(-1) then
-						luasnip.jump(-1)
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-				["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept selected completion item
-			}),
-			sources = cmp.config.sources({
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- For luasnip users.
-			}, {
-				{ name = "buffer" },
-			}),
-		})
-
 		vim.diagnostic.config({
 			-- update_in_insert = true,
 			float = {
@@ -290,7 +240,7 @@ return {
 					server.capabilities = vim.tbl_deep_extend(
 						"force",
 						{},
-						cmp_capabilities,
+						-- cmp_capabilities,
 						blink_capabilities,
 						server.capabilities or {}
 					)

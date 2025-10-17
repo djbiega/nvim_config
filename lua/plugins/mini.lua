@@ -1,7 +1,7 @@
 -- Collection of various small independent plugins/modules
 
 return {
-	"echasnovski/mini.nvim",
+	"nvim-mini/mini.nvim",
 	config = function()
 		-- Better Around/Inside textobjects
 		--
@@ -33,7 +33,6 @@ return {
 			return "%2l:%-2v"
 		end
 
-		-- Simple way to comment out 1 or more lines
 		-- gcc [Goto] [C]ode [Commenter] (I think?)
 		require("mini.comment").setup()
 	end,
